@@ -1,10 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.*;
 import java.awt.Font;
+import javax.swing.border.TitledBorder;
+import javax.swing.border.Border;
 
 public class MainGUI {
 
@@ -203,8 +204,126 @@ public class MainGUI {
         // --------------------- Add Tabs to Tabbed Pane ---------------------
         tabbedPane.addTab("Expenses", expensePanel);
         tabbedPane.addTab("Calculators", calculatorPanel);
+        tabbedPane.addTab("Goal Tracker", goalPanel);
 
         tabbedPane.addTab("Goal Tracker", goalPanel);
+
+        // --------------------- Appearance Tab ---------------------
+        JPanel appearancePanel = new JPanel(new GridLayout(4, 1, 10, 10));
+        appearancePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        String[] themes = {"Light", "Dark"};
+        JComboBox<String> themeSelector = new JComboBox<>(themes);
+
+        String[] colors = {"Blue", "Green", "Purple", "Orange"};
+        JComboBox<String> colorSelector = new JComboBox<>(colors);
+
+        JButton applyButton = new JButton("Apply Settings");
+
+        appearancePanel.add(new JLabel("Select Theme:"));
+        appearancePanel.add(themeSelector);
+        appearancePanel.add(new JLabel("Select Button Color:"));
+        appearancePanel.add(colorSelector);
+        appearancePanel.add(applyButton);
+
+        tabbedPane.addTab("Appearance", appearancePanel);
+
+        // --------------------- Apply Button Logic ---------------------
+        applyButton.addActionListener(e -> {
+            String selectedTheme = (String) themeSelector.getSelectedItem();
+            String selectedColor = (String) colorSelector.getSelectedItem();
+
+            Color bgColor;
+            Color textColor = Color.BLACK;
+
+            // Theme logic
+            if (selectedTheme.equals("Dark")) {
+                bgColor = new Color(45, 45, 45);
+                textColor = Color.WHITE;
+            } else {
+                bgColor = Color.WHITE;
+            }
+
+            // Update all input field and text display colors
+            incomeField.setBackground(bgColor);
+            incomeField.setForeground(textColor);
+            incomeField.setCaretColor(textColor);
+
+            categoryField.setBackground(bgColor);
+            categoryField.setForeground(textColor);
+            categoryField.setCaretColor(textColor);
+
+            amountField.setBackground(bgColor);
+            amountField.setForeground(textColor);
+            amountField.setCaretColor(textColor);
+
+            dateField.setBackground(bgColor);
+            dateField.setForeground(textColor);
+            dateField.setCaretColor(textColor);
+
+            expenseDisplay.setBackground(bgColor);
+            expenseDisplay.setForeground(textColor);
+            expenseDisplay.setCaretColor(textColor);
+
+            // Update titled border colors
+            Border topBorder = topPanel.getBorder();
+            if (topBorder instanceof TitledBorder titledTop) {
+                titledTop.setTitleColor(textColor);
+            }
+
+            Border scrollBorder = scrollPane.getBorder();
+            if (scrollBorder instanceof TitledBorder titledScroll) {
+                titledScroll.setTitleColor(textColor);
+            }
+
+
+            // Set label color inside topPanel based on selected theme
+            for (Component c : topPanel.getComponents()) {
+                if (c instanceof JLabel label) {
+                    label.setForeground(textColor); // Use textColor set by theme
+                }
+            }
+
+            // Apply background and text color to all tab contents
+            for (Component comp : frame.getContentPane().getComponents()) {
+                if (comp instanceof JTabbedPane tabPane) {
+                    for (int i = 0; i < tabPane.getTabCount(); i++) {
+                        Component panel = tabPane.getComponentAt(i);
+                        panel.setBackground(bgColor);
+                        panel.setForeground(textColor);
+                        if (panel instanceof JPanel p) {
+                            for (Component inner : p.getComponents()) {
+                                inner.setBackground(bgColor);
+                                inner.setForeground(textColor);
+
+                                if (inner instanceof JScrollPane scroll) {
+                                    scroll.getViewport().setBackground(bgColor);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Button color logic
+            Color selectedBase = switch (selectedColor) {
+                case "Green" -> new Color(46, 139, 87);
+                case "Purple" -> new Color(138, 43, 226);
+                case "Orange" -> new Color(255, 140, 0);
+                default -> new Color(59, 89, 182); // Blue
+            };
+
+            Color selectedHover = selectedBase.darker();
+
+            // Reapply hover effect to all buttons
+            addHoverEffect(addButton, selectedBase, selectedHover);
+            addHoverEffect(summaryButton, selectedBase, selectedHover);
+            addHoverEffect(compoundButton, selectedBase, selectedHover);
+            addHoverEffect(taxButton, selectedBase, selectedHover);
+            addHoverEffect(loanButton, selectedBase, selectedHover);
+            addHoverEffect(trackButton, selectedBase, selectedHover);
+            addHoverEffect(applyButton, selectedBase, selectedHover);
+        });
 
         frame.add(tabbedPane);
 
