@@ -1,7 +1,7 @@
 # **FinanceEasy – Personal Finance Management Application**
 FinanceEasy is a Java desktop application that helps users track expenses, monitor savings goals, and perform common financial calculations like loan payments, taxes, and compound interest. The goal of the project was to build a simple, accessible tool for students or young adults who are learning to manage their finances.
 
-**Link to project:** https://github.com/JB5735/FinanceEasy
+**Link to project:** https://github.com/JB5735/IB-FinanceEasy
 
 ## **How It's Made:**
 **Tech used:** Java, Java Swing, Object-Oriented Programming, ArrayList, HashMap
