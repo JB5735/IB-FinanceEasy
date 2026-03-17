@@ -37,7 +37,7 @@ The interface is organized using JTabbedPane, allowing users to easily navigate 
 
 ## **How to Run**
 1. Clone the repository:
-git clone https://github.com/YOUR_USERNAME/FinanceEasy.git
+git clone https://github.com/JB5735/IB-FinanceEasy.git
 
 2. Open the project in IntelliJ IDEA or another Java IDE.
 
